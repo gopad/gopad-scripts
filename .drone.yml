@@ -2,11 +2,21 @@ workspace:
   base: /srv/app
   path: src/github.com/gopad/gopad-scripts
 
+branches:
+  - master
+
 pipeline:
-  cache-restore:
-    image: plugins/s3-cache:1
+  test-bashate:
+    image: webhippie/python:2
     pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-    restore: true
+    commands:
+      - make bashate
+
+  notify-matrix:
+    image: plugins/matrix:1
+    pull: true
+    secrets: [ matrix_roomid, matrix_username, matrix_password ]
     when:
       local: false
+      events: [ push, tag ]
+      status: [ changed, failure ]
