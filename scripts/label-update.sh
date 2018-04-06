@@ -32,6 +32,11 @@ repos=(
     gopad-scripts
     gopad-android
     gopad-ios
+    gopad-go
+    gopad-js
+    gopad-php
+    gopad-python
+    gopad-ruby
 )
 
 labels=(
