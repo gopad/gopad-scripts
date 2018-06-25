@@ -6,11 +6,11 @@ branches:
   - master
 
 pipeline:
-  test-bashate:
-    image: webhippie/python:2
+  test-shellcheck:
+    image: toolhippie/shellcheck:latest
     pull: true
     commands:
-      - make bashate
+      - make shellcheck
 
   label-update:
     image: toolhippie/ghi:latest

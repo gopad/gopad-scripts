@@ -64,6 +64,6 @@ for repo in "${repos[@]}"; do
         title="${label%%:*}"
         color="${label##*:}"
 
-        ghi label -a -c "${color}" "${title}" -- gopad/${repo}
+        ghi label -a -c "${color}" "${title}" -- "gopad/${repo}"
     done
 done
