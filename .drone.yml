@@ -12,11 +12,20 @@ pipeline:
     commands:
       - make bashate
 
+  label-update:
+    image: toolhippie/ghi:latest
+    pull: true
+    secrets: [ ghi_token ]
+    commands:
+      - bash scripts/label-update.sh
+    when:
+      events: [ push ]
+
   notify-matrix:
     image: plugins/matrix:1
     pull: true
     secrets: [ matrix_roomid, matrix_username, matrix_password ]
     when:
       local: false
-      events: [ push, tag ]
+      events: [ push ]
       status: [ changed, failure ]
