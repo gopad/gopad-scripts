@@ -37,6 +37,7 @@ repos=(
     gopad-php
     gopad-python
     gopad-ruby
+    gopad-infra
 )
 
 labels=(
