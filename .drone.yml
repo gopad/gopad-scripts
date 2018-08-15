@@ -12,6 +12,15 @@ pipeline:
     commands:
       - make shellcheck
 
+  hub-description:
+    image: toolhippie/jq:latest
+    pull: true
+    secrets: [ docker_username, docker_password ]
+    commands:
+      - bash scripts/hub-description.sh
+    when:
+      event: [ push ]
+
   label-update:
     image: toolhippie/ghi:latest
     pull: true
