@@ -19,7 +19,7 @@ pipeline:
     commands:
       - bash scripts/label-update.sh
     when:
-      events: [ push ]
+      event: [ push ]
 
   notify-matrix:
     image: plugins/matrix:1
@@ -27,5 +27,5 @@ pipeline:
     secrets: [ matrix_roomid, matrix_username, matrix_password ]
     when:
       local: false
-      events: [ push ]
+      event: [ push ]
       status: [ changed, failure ]
