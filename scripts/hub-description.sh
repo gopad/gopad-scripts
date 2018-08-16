@@ -29,7 +29,7 @@ if [ -z "${DOCKER_USERNAME}" ]; then
 fi
 
 echo "> fetching token"
-TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${DOCKER_USERNAME}'", "password": "'${DOCKER_PASSWORD}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'"${DOCKER_USERNAME}"'", "password": "'"${DOCKER_PASSWORD}"'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
 
 echo "> fetching repos"
 REPOS=$(curl -s -H "Authorization: JWT ${TOKEN}" -H "Content-Type: application/json" https://hub.docker.com/v2/repositories/gopad/?page_size=1000 | jq -r '.results|.[]|.name')
@@ -52,14 +52,14 @@ for REPO in ${REPOS}; do
     esac
 
     DESCRIPTION=(
-        '# '${TITLE}' [![Build Status](http://drone.gopad.tech/api/badges/gopad/'${REPO}'/status.svg)](http://drone.gopad.tech/gopad/'${REPO}') [![](https://images.microbadger.com/badges/image/gopad/'${REPO}'.svg)](http://microbadger.com/images/gopad/'${REPO}' \"Get your own image badge on microbadger.com\")'
+        '# '"${TITLE}"' [![Build Status](http://drone.gopad.tech/api/badges/gopad/'"${REPO}"'/status.svg)](http://drone.gopad.tech/gopad/'"${REPO}"') [![](https://images.microbadger.com/badges/image/gopad/'"${REPO}"'.svg)](http://microbadger.com/images/gopad/'"${REPO}"' \"Get your own image badge on microbadger.com\")'
         '\n'
-        'Managed by [gopad/'${REPO}'](https://github.com/gopad/'${REPO}'), built and pushed with [Drone CI](http://drone.gopad.tech/gopad/'${REPO}').'
+        'Managed by [gopad/'"${REPO}"'](https://github.com/gopad/'"${REPO}"'), built and pushed with [Drone CI](http://drone.gopad.tech/gopad/'"${REPO}"').'
     )
 
     PAYLOAD=$(mktemp)
-    echo '{"description": "'${TITLE}'", "full_description": "'${DESCRIPTION[@]}'"}' >| ${PAYLOAD}
+    echo '{"description": "'"${TITLE}"'", "full_description": "'"${DESCRIPTION[*]}"'"}' >| "${PAYLOAD}"
 
     echo "> updating ${REPO}"
-    curl --fail -o /dev/null -H "Authorization: JWT ${TOKEN}" -H "Content-Type: application/json" -X PATCH --data-binary @${PAYLOAD} https://hub.docker.com/v2/repositories/gopad/${REPO}/
+    curl --fail -o /dev/null -H "Authorization: JWT ${TOKEN}" -H "Content-Type: application/json" -X PATCH --data-binary @"${PAYLOAD}" https://hub.docker.com/v2/repositories/gopad/"${REPO}"/
 done
