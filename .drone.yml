@@ -1,40 +1,63 @@
-workspace:
-  base: /srv/app
-  path: src/github.com/gopad/gopad-scripts
+---
+kind: pipeline
+name: testing
 
-branches:
-  - master
+platform:
+  os: linux
+  arch: amd64
 
-pipeline:
-  test-shellcheck:
-    image: toolhippie/shellcheck:latest
-    pull: true
-    commands:
-      - make shellcheck
+steps:
+- name: shellcheck
+  image: toolhippie/shellcheck:latest
+  pull: always
+  commands:
+  - make shellcheck
 
-  hub-description:
-    image: toolhippie/jq:latest
-    pull: true
-    secrets: [ docker_username, docker_password ]
-    commands:
-      - bash scripts/hub-description.sh
-    when:
-      event: [ push ]
+- name: dockerhub
+  image: toolhippie/jq:latest
+  pull: always
+  environment:
+    docker_username:
+      from_secret: docker_username
+    docker_password:
+      from_secret: docker_password
+  commands:
+  - bash scripts/dockerhub.sh
+  when:
+    event:
+    - push
 
-  label-update:
-    image: toolhippie/ghi:latest
-    pull: true
-    secrets: [ ghi_token ]
-    commands:
-      - bash scripts/label-update.sh
-    when:
-      event: [ push ]
+- name: labeling
+  image: toolhippie/ghi:latest
+  pull: always
+  environment:
+    ghi_token:
+      from_secret: ghi_token
+  commands:
+  - bash scripts/labeling.sh
+  when:
+    event:
+    - push
 
-  notify-matrix:
-    image: plugins/matrix:1
-    pull: true
-    secrets: [ matrix_roomid, matrix_username, matrix_password ]
-    when:
-      local: false
-      event: [ push ]
-      status: [ changed, failure ]
+- name: notify
+  image: plugins/matrix:1
+  pull: always
+  settings:
+    username:
+      from_secret: matrix_username
+    password:
+      from_secret: matrix_password
+    roomid:
+      from_secret: matrix_roomid
+  when:
+    event:
+    - push
+    - tag
+    status:
+    - failure
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**

@@ -23,8 +23,8 @@ if [ -z "${DOCKER_USERNAME}" ]; then
     exit 1
 fi
 
-if [ -z "${DOCKER_USERNAME}" ]; then
-    echo "Please export DOCKER_USERNAME!"
+if [ -z "${DOCKER_PASSWORD}" ]; then
+    echo "Please export DOCKER_PASSWORD!"
     exit 1
 fi
 
@@ -52,9 +52,9 @@ for REPO in ${REPOS}; do
     esac
 
     DESCRIPTION=(
-        '# '"${TITLE}"' [![Build Status](http://drone.gopad.tech/api/badges/gopad/'"${REPO}"'/status.svg)](http://drone.gopad.tech/gopad/'"${REPO}"') [![](https://images.microbadger.com/badges/image/gopad/'"${REPO}"'.svg)](http://microbadger.com/images/gopad/'"${REPO}"' \"Get your own image badge on microbadger.com\")'
+        '# '"${TITLE}"' [![Build Status](http://cloud.drone.io/api/badges/gopad/'"${REPO}"'/status.svg)](http://cloud.drone.io/gopad/'"${REPO}"') [![](https://images.microbadger.com/badges/image/gopad/'"${REPO}"'.svg)](http://microbadger.com/images/gopad/'"${REPO}"' \"Get your own image badge on microbadger.com\")'
         '\n'
-        'Managed by [gopad/'"${REPO}"'](https://github.com/gopad/'"${REPO}"'), built and pushed with [Drone CI](http://drone.gopad.tech/gopad/'"${REPO}"').'
+        'Managed by [gopad/'"${REPO}"'](https://github.com/gopad/'"${REPO}"'), built and pushed with [Drone CI](http://cloud.drone.io/gopad/'"${REPO}"').'
     )
 
     PAYLOAD=$(mktemp)

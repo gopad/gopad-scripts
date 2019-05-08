@@ -24,26 +24,28 @@ if ! hash ghi 2>/dev/null; then
 fi
 
 repos=(
-    homebrew-gopad
-    gopad-ui
+    gopad-android
     gopad-api
     gopad-cli
+    gopad-desktop
     gopad-docs
-    gopad-scripts
-    gopad-android
-    gopad-ios
     gopad-go
+    gopad-infra
+    gopad-ios
     gopad-js
     gopad-php
     gopad-python
     gopad-ruby
-    gopad-infra
+    gopad-scripts
+    gopad-ui
+    homebrew-gopad
 )
 
 labels=(
     bug:fc2929
     duplicate:cccccc
     enhancement:84b6eb
+    good\ first\ issue:7057ff
     hacktoberfest:d4c5f9
     help\ wanted:159818
     in\ progress:ededed
@@ -53,6 +55,8 @@ labels=(
     poc:c2e0c6
     question:cc317c
     ready:ededed
+    rebase:ffa8a5
+    renovate:1d76db
     third-party:e99695
     translation:b60205
     wontfix:5319e7
