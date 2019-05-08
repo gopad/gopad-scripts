@@ -17,9 +17,9 @@ steps:
   image: toolhippie/jq:latest
   pull: always
   environment:
-    docker_username:
+    DOCKER_USERNAME:
       from_secret: docker_username
-    docker_password:
+    DOCKER_PASSWORD:
       from_secret: docker_password
   commands:
   - bash scripts/dockerhub.sh
@@ -31,7 +31,7 @@ steps:
   image: toolhippie/ghi:latest
   pull: always
   environment:
-    ghi_token:
+    GHI_TOKEN:
       from_secret: ghi_token
   commands:
   - bash scripts/labeling.sh
